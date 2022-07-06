@@ -9,7 +9,7 @@ services: # Раздел описания сервисов
       - front-static-dev: /usr/share/nginx/html  # Вынесение статики в отдельный том
     env_file:
       - .env # Указание файла с переменными окружения
-    port:
+    ports:
       - 8080:80
     networks:
       - udw-avia-dev # Подключение контейнера к общей сети udw-avia-dev
