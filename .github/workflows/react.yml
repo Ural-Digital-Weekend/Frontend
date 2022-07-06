@@ -1,0 +1,29 @@
+name: Django CI
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+#env:
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+    - name: "Build docker container"
+      run: |
+        echo "REACT_APP_BASE_URL=http://109.120.190.124:8888/api/" > .env
+        docker-compose build
+    - name: "Execute tests in container"
+      run: |
+        docker run --network backend_udw-avia-dev front npm-test 
+  deploy:
+    needs: [build]
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+    - name: Deploy to stage
+      run: |
+        docker-compose up -d
+
