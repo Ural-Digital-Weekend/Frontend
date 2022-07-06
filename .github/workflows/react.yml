@@ -1,8 +1,8 @@
-name: Django CI
+name: react
 
 on:
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 #env:
 
