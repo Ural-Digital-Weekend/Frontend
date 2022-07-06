@@ -28,6 +28,9 @@ export const commentSlice = createSlice({
     commentFetchingError(state, action: PayloadAction<Error>) {
       state.loading = false
       state.error = action.payload.message
+    },
+    addComment(state, action: PayloadAction<IComment>) {
+      state.comments.push(action.payload)
     }
   }
 })

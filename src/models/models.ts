@@ -31,7 +31,12 @@ export interface ServerResponse<T> {
 }
 
 export interface IComment {
-  id: string
+  id: number
+  comment: string
+  created: string
+  user: {
+    username: string
+  }
 }
 
 export interface IAuth {
@@ -42,6 +47,12 @@ export interface IAuth {
 export interface IAuthResponse {
   access: string
   refresh: string
+}
+
+export interface IFilter {
+  type: IAirportType
+  country: IAirportCountry
+  region: IAirportRegion
 }
 
 export type IAirportType = string

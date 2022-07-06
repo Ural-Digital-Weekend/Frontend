@@ -7,8 +7,9 @@ interface CommentProps {
 
 export function Comment({comment}: CommentProps) {
   return (
-    <div>
-      I am comment
+    <div className="py-2 px-4 border rounded mb-4">
+      <div className="font-thin text-xs">{comment.created}</div>
+      <p className="text-base">{comment.comment}</p>
     </div>
   )
 }

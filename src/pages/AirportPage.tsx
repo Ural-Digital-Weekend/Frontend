@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Comment} from "../components/Comment";
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks/redux";
@@ -8,6 +8,7 @@ import {CommentForm} from "../components/CommentForm";
 export function AirportPage() {
   const params = useParams<'id'>()
   const dispatch = useAppDispatch()
+  const [canCreate, setCanCreate] = useState(true)
   const {loading, airport} = useAppSelector(state => state.airportDetailReducer)
   const {isAuthenticated} = useAppSelector(state => state.authReducer)
   const {loading: commentLoading, comments} = useAppSelector(state => state.commentReducer)
@@ -37,7 +38,10 @@ export function AirportPage() {
 
         <hr className="my-4"/>
 
-        {isAuthenticated && <CommentForm/>}
+        {isAuthenticated && canCreate && <CommentForm
+          airportId={params.id!}
+          onCreate={() => setCanCreate(false)}
+        />}
 
         {
           commentLoading

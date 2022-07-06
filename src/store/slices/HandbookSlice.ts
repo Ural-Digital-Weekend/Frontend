@@ -10,7 +10,7 @@ interface HandbookState {
 }
 
 const initialState: HandbookState = {
-  loading: false,
+  loading: true,
   types: [],
   regions: [],
   countries: [],

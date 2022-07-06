@@ -6,11 +6,29 @@ interface AuthState {
   username: string
 }
 
-const initialState: AuthState = {
-  isAuthenticated: Boolean(localStorage.getItem('dc-access') ?? ''),
-  access: localStorage.getItem('dc-access') ?? '',
-  username: localStorage.getItem('dc-username') ?? ''
+const ACCESS_KEY = 'dc-access'
+const USERNAME_KEY = 'dc-username'
+const EXPIRES_KEY = 'dc-expires'
+
+function getInitialState(): AuthState {
+  const expiresIn = localStorage.getItem(EXPIRES_KEY) ?? null
+
+  if (expiresIn && new Date() > new Date(expiresIn)) {
+    return {
+      isAuthenticated: false,
+      access: '',
+      username: ''
+    }
+  }
+
+  return {
+    isAuthenticated: Boolean(localStorage.getItem(ACCESS_KEY) ?? ''),
+    access: localStorage.getItem(ACCESS_KEY) ?? '',
+    username: localStorage.getItem(USERNAME_KEY) ?? ''
+  }
 }
+
+const initialState: AuthState = getInitialState()
 
 interface AuthPayload {
   access: string
@@ -25,16 +43,20 @@ export const authSlice = createSlice({
       state.isAuthenticated = false
       state.access = ''
       state.username = ''
-      localStorage.removeItem('dc-access')
-      localStorage.removeItem('dc-username')
+      localStorage.removeItem(ACCESS_KEY)
+      localStorage.removeItem(USERNAME_KEY)
+      localStorage.removeItem(EXPIRES_KEY)
     },
-    registerError() {},
     loginSuccess(state, action: PayloadAction<AuthPayload>) {
       state.access = action.payload.access
       state.username = action.payload.username
-      localStorage.setItem('dc-access', action.payload.access)
-      localStorage.setItem('dc-username', action.payload.username)
       state.isAuthenticated = Boolean(action.payload.access)
+
+      const tokenExpires = new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+
+      localStorage.setItem(ACCESS_KEY, action.payload.access)
+      localStorage.setItem(USERNAME_KEY, action.payload.username)
+      localStorage.setItem(EXPIRES_KEY, tokenExpires.toString())
     }
   }
 })
