@@ -17,7 +17,7 @@ jobs:
         docker-compose build
     - name: "Execute tests in container"
       run: |
-        docker run frontend_front npm-test 
+        docker run -it --entrypoint=/bin/sh -v $(pwd):/app node:17-alpine -c 'cd /app && npm install && npm test -- --watchAll=false --passWithNoTests'
   deploy:
     needs: [build]
     runs-on: self-hosted
@@ -25,5 +25,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: Deploy to stage
       run: |
+        echo "REACT_APP_BASE_URL=http://109.120.190.124:8888/api/" > .env
         docker-compose up -d
 
