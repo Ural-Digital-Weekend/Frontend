@@ -17,7 +17,7 @@ jobs:
         docker-compose build
     - name: "Execute tests in container"
       run: |
-        docker run --network backend_udw-avia-dev front npm-test 
+        docker run frontend_front npm-test 
   deploy:
     needs: [build]
     runs-on: self-hosted
