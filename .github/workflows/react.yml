@@ -17,7 +17,7 @@ jobs:
         docker-compose build
     - name: "Execute tests in container"
       run: |
-        docker run -it --entrypoint=/bin/sh -v $(pwd):/app node:17-alpine -c 'cd /app && npm install && npm test -- --watchAll=false --passWithNoTests'
+        docker run -u 1000 --entrypoint=/bin/sh -v $(pwd):/app node:17-alpine -c 'cd /app && npm install && npm test -- --watchAll=false --passWithNoTests'
   deploy:
     needs: [build]
     runs-on: self-hosted
