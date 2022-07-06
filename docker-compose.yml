@@ -6,7 +6,7 @@ services: # Раздел описания сервисов
     build:
       context: . # Папка, где находится Dockerfile, из которого будет создан контейнер
     volumes:
-      - front-static-dev: /usr/share/nginx/html  # Вынесение статики в отдельный том
+       - front-static-dev:/usr/share/nginx/html  # Вынесение статики в отдельный том
     env_file:
       - .env # Указание файла с переменными окружения
     ports:
@@ -21,7 +21,6 @@ services: # Раздел описания сервисов
 
 volumes: # Раздел с томами, используемыми в сервисах
   front-static-dev:
-  postgres-data-dev:
 
 networks: # Раздел с сетями, используемыми в сервисах
   udw-avia-dev:
