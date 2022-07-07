@@ -1,0 +1,17 @@
+version: '3' # Версия спецификации docker-compose
+
+services: # Раздел описания сервисов
+  front: # Описываем сервис нашего веб-приложения
+    container_name: front-udw-avia-dev # Наименование контейнера приложения
+    build:
+      context: . # Папка, где находится Dockerfile, из которого будет создан контейнер
+    volumes:
+       - front-static-dev:/usr/share/nginx/html  # Вынесение статики в отдельный том
+    env_file:
+      - .env # Указание файла с переменными окружения
+    ports:
+      - 8080:80
+
+volumes: # Раздел с томами, используемыми в сервисах
+  front-static-dev:
+

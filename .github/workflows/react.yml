@@ -1,0 +1,30 @@
+name: react
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+#env:
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+    - name: "Build docker container"
+      run: |
+        echo "REACT_APP_BASE_URL=http://109.120.190.124:8000/api/" > .env
+        docker-compose build
+    - name: "Execute tests in container"
+      run: |
+        docker run -u 1000 --entrypoint=/bin/sh -v $(pwd):/app node:17-alpine -c 'cd /app && npm install && npm test -- --watchAll=false --passWithNoTests'
+  deploy:
+    needs: [build]
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+    - name: Deploy to stage
+      run: |
+        echo "REACT_APP_BASE_URL=http://109.120.190.124:8000/api/" > .env
+        docker-compose up -d
+

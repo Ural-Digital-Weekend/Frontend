@@ -1,0 +1,19 @@
+name: Deploy prod
+
+on:
+  push:
+    branches: [ "prod" ]
+
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+    - name: Deploy to prod
+      working-directory: prod
+      run: |
+        echo "REACT_APP_BASE_URL=http://109.120.190.124:8001/api/" > ../.env
+        docker-compose build 
+        docker-compose up -d
+
